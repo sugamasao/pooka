@@ -7,7 +7,6 @@ require 'pry'
 
 module SimpleDaemon
   class Daemon
-
     attr_reader :configuration, :logger
     attr_accessor :onset_of_sleep, :runnable
 
@@ -46,7 +45,6 @@ module SimpleDaemon
     #   do_something
     # end
     def run(daemonize = true)
-
       begin
         Process.daemon if daemonize
 

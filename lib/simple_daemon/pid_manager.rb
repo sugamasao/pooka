@@ -2,10 +2,8 @@
 require 'pathname'
 
 module SimpleDaemon
-
   # PID File Manager.
   class PIDManager
-
     attr_reader :path
 
     # @param [String] path PIDファイルを作成するパス
