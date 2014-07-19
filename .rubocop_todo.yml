@@ -27,10 +27,6 @@ Style/ClassLength:
 Style/CyclomaticComplexity:
   Max: 10
 
-# Offense count: 2
-Style/Documentation:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: AllowURI.
 Style/LineLength:

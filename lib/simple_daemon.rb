@@ -5,7 +5,9 @@ require_relative 'simple_daemon/pid_manager'
 
 require 'pry'
 
+# namespace of SimpleDaemon
 module SimpleDaemon
+  # SimpleDaemon Main Class
   class Daemon
     attr_reader :configuration, :logger
     attr_accessor :onset_of_sleep, :runnable
