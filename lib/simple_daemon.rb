@@ -97,35 +97,35 @@ module SimpleDaemon
     # simple daemon setup
     # setup to callback
     def register_callback
-      @before_callback << -> {
+      @before_callback << -> do
         @logger = LoggerManager.new(@configuration.logger_path, @configuration.logger_level)
         @logger.open
         @pid = PIDManager.new(@configuration.pid_path, $$)
         @pid.create
-      }
+      end
 
-      @after_callback << -> {
+      @after_callback << -> do
         @pid.delete
         @logger.close
-      }
+      end
     end
 
     def register_signal
-      Signal.trap(:INT) {
+      Signal.trap(:INT) do
         @runnable = false
-      }
+      end
 
-      Signal.trap(:TERM) {
+      Signal.trap(:TERM) do
         @runnable = false
-      }
+      end
 
-      Signal.trap(:HUP) {
+      Signal.trap(:HUP) do
         @reload_configuration = true
-      }
+      end
 
-      Signal.trap(:USR1) {
+      Signal.trap(:USR1) do
         @reload_logfile = true
-      }
+      end
     end
 
     # @return [Boolean] true is shutdown
