@@ -62,4 +62,3 @@ module SimpleDaemon
     end
   end
 end
-
