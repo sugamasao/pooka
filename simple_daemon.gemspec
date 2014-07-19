@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SimpleDaemon::VERSION
   spec.authors       = ['sugamasao']
   spec.email         = ['sugamasao@gmail.com']
-  spec.summary       = %q{Simply Daemon Framework}
-  spec.description   = %q{Simply Daemon Framework Your Program to Daemonize}
+  spec.summary       = %q(Simply Daemon Tool)
+  spec.description   = %q(Simply Daemon Tool Your Program to Daemonize)
   spec.homepage      = 'https://github.com/sugamasao/simple_daemon'
   spec.license       = 'MIT'
 
@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'byebug'
+  spec.add_development_dependency 'rubocop'
 end
