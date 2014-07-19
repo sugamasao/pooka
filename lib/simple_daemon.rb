@@ -97,7 +97,7 @@ module SimpleDaemon
       @before_callback << -> do
         @logger = LoggerManager.new(@configuration.logger_path, @configuration.logger_level)
         @logger.open
-        @pid = PIDManager.new(@configuration.pid_path, $$)
+        @pid = PIDManager.new(@configuration.pid_path, $PROCESS_ID)
         @pid.create
       end
 
