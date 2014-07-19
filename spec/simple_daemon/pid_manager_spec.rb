@@ -52,7 +52,7 @@ describe SimpleDaemon::PIDManager do
 
     it 'can not delete pid' do
       expect(File.exist? path).to be_falsey
-      expect{ pid.delete }.to_not raise_error
+      expect { pid.delete }.to_not raise_error
     end
   end
 
