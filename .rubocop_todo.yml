@@ -27,11 +27,6 @@ Style/ClassLength:
 Style/CyclomaticComplexity:
   Max: 10
 
-# Offense count: 7
-# Configuration parameters: AllowURI.
-Style/LineLength:
-  Max: 118
-
 # Offense count: 2
 # Configuration parameters: CountComments.
 Style/MethodLength:
