@@ -56,14 +56,7 @@ module SimpleDaemon
         before_process
 
         loop do
-          if @verbose
-            @logger.debug "#{ self.class } - #{ VERSION }"
-            @logger.debug "sleep?               - #{ sleep? }"
-            @logger.debug "shutdown?            - #{ shutdown? }"
-            @logger.debug "reload_configuration - #{ @reload_configuration }"
-            @logger.debug "reload_logfile       - #{ @reload_logfile }"
-            @logger.debug "pid path             - #{ @pid.path }"
-          end
+          inspect_daemon_information if @verbose
 
           yield self unless suspend?
 
@@ -159,6 +152,16 @@ module SimpleDaemon
       sec.to_i.times do
         sleep 1
       end
+    end
+
+    # logging daemon information
+    def inspect_daemon_information
+      @logger.debug "#{ self.class } - #{ VERSION }"
+      @logger.debug "sleep?               - #{ sleep? }"
+      @logger.debug "shutdown?            - #{ shutdown? }"
+      @logger.debug "reload_configuration - #{ @reload_configuration }"
+      @logger.debug "reload_logfile       - #{ @reload_logfile }"
+      @logger.debug "pid path             - #{ @pid.path }"
     end
   end
 end
