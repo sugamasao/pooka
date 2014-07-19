@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SimpleDaemon::VERSION
   spec.authors       = ['sugamasao']
   spec.email         = ['sugamasao@gmail.com']
-  spec.summary       = %q(Simply Daemon Tool)
-  spec.description   = %q(Simply Daemon Tool Your Program to Daemonize)
+  spec.summary       = 'Simply Daemon Tool'
+  spec.description   = 'Simply Daemon Tool Your Program to Daemonize'
   spec.homepage      = 'https://github.com/sugamasao/simple_daemon'
   spec.license       = 'MIT'
 

@@ -63,8 +63,3 @@ Style/RedundantBegin:
 # Offense count: 2
 Style/RegexpLiteral:
   MaxSlashes: 0
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/UnneededPercentQ:
-  Enabled: false
