@@ -3,6 +3,8 @@ require 'logger'
 require 'forwardable'
 
 module SimpleDaemon
+
+  # Logger Management Class
   class LoggerManager
     extend Forwardable
 

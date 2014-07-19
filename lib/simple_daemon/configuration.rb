@@ -3,7 +3,7 @@ require 'yaml'
 require 'forwardable'
 
 module SimpleDaemon
-
+  # SimpleDaemon Configuration Class.
   class Configuration
     extend Forwardable
 
