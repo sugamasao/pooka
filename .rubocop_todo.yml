@@ -36,10 +36,6 @@ Style/Documentation:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 2
-Style/Lambda:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: AllowURI.
 Style/LineLength:
@@ -63,3 +59,4 @@ Style/RedundantBegin:
 # Offense count: 2
 Style/RegexpLiteral:
   MaxSlashes: 0
+  Enabled: true

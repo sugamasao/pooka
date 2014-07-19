@@ -94,14 +94,14 @@ module SimpleDaemon
     # simple daemon setup
     # setup to callback
     def register_callback
-      @before_callback << -> do
+      @before_callback << lambda do
         @logger = LoggerManager.new(@configuration.logger_path, @configuration.logger_level)
         @logger.open
         @pid = PIDManager.new(@configuration.pid_path, $PROCESS_ID)
         @pid.create
       end
 
-      @after_callback << -> do
+      @after_callback << lambda do
         @pid.delete
         @logger.close
       end
