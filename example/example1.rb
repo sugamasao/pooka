@@ -33,7 +33,5 @@ daemon.run(false) do |d|
 
   # 3 times loop before daemon shutdown
   loop_count += 1
-  if loop_count == 3
-    d.runnable = false
-  end
+  d.runnable = false if loop_count == 3
 end

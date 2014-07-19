@@ -63,9 +63,7 @@ module SimpleDaemon
             @logger.debug "pid path             - #{ @pid.path }"
           end
 
-          unless suspend?
-            yield self
-          end
+          yield self unless suspend?
 
           if shutdown?
             @logger.info 'Daemon will be Shutdown...' if @verbose
@@ -77,9 +75,7 @@ module SimpleDaemon
             sleeping(configuration.sleep_time)
           end
 
-          if @reload_logfile
-            @logger.reopen
-          end
+          @logger.reopen if @reload_logfile
         end
 
       rescue => e
