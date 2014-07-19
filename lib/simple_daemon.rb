@@ -41,7 +41,6 @@ module SimpleDaemon
       @configuration.load(filename)
     end
 
-
     # using
     # daemon.run(false) do |daemon|
     #   do_something
