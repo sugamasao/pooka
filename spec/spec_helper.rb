@@ -10,5 +10,5 @@ require 'simple_daemon/logger_manager'
 require 'pry'
 
 RSpec.configure do |config|
-#  config.raise_errors_for_deprecations!
+  config.raise_errors_for_deprecations!
 end

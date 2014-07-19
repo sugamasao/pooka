@@ -24,11 +24,6 @@ Style/ClassLength:
   Max: 106
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Style/CommentIndentation:
-  Enabled: false
-
-# Offense count: 1
 Style/CyclomaticComplexity:
   Max: 10
 
