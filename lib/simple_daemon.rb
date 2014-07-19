@@ -132,7 +132,7 @@ module SimpleDaemon
 
     # @return [Boolean] true is sleep
     def sleep?
-      @onset_of_sleep
+      onset_of_sleep
     end
 
     # Suppression daemon.run block
