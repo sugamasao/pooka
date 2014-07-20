@@ -40,11 +40,12 @@ module SimpleDaemon
 
     # Logger reopen
     # @param [String] new_logfile_path nil is using now used file path
-    def reopen(new_logfile_path = nil)
+    # @param [String] new_level nil is using now used log level
+    def reopen(new_logfile_path = nil, new_level = nil)
       old_logger = @logger
       begin
         @logger = Logger.new(new_logfile_path || @path)
-        @logger.level = find_logger_level(@level)
+        @logger.level = find_logger_level(new_level || @level)
         old_logger.close
       rescue
         @logger = old_logger

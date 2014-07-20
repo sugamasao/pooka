@@ -3,6 +3,9 @@ require 'yaml'
 require 'forwardable'
 
 module SimpleDaemon
+  # Configuration Error Class
+  class ConfigurationError < StandardError;end
+
   # SimpleDaemon Configuration Class.
   class Configuration
     extend Forwardable
@@ -29,28 +32,54 @@ module SimpleDaemon
       @sleep_time   = 10 # sec
     end
 
-    # @param [String] configure_filename configuration path(Format is YAML)
+    # settings load
+    # @param [String] filename configuration path(Format is YAML)
     # @return [Hash] Load Data
-    def load(configure_filename)
-      @configure_filename = configure_filename.to_s
+    # @raise [ConfigurationError] File NotFound or File format Error
+    def load(filename)
 
-      @data = YAML.load_file(@configure_filename)
+      unless File.file?(filename.to_s)
+        raise ConfigurationError.new("Configuration YAML File NotFound(#{ filename })")
+      end
 
-      @logger_path  = @data['logger_path']  || @logger_path
-      @logger_level = @data['logger_level'] || @logger_level
-      @pid_path     = @data['pid_path']     || @pid_path
-      @suspend_file = @data['suspend_file'] || @suspend_file
-      @sleep_time   = @data['sleep_time']   || @sleep_time
+      @configure_filename = filename
+      begin
+        @data = YAML.load_file(@configure_filename)
+        apply_configure(@data)
+      rescue Psych::SyntaxError => e
+        raise ConfigurationError.new("Configuration YAML Format Error(#{ filename }) - #{ e.message }")
+      end
     end
 
+    # reload yaml data
+    # @raise [ConfigurationError] File NotFound or File format Error
     def reload
+      load(@configure_filename)
     end
 
+    # Dump dat
+    # @return [String] data
     def dump_configuration
       @data.to_s
     end
 
+    # suspend file exists?
+    # @return [Boolean] true is exits
+    def suspend_file?
+      File.file?(@suspend_file.to_s)
+    end
+
     private
+
+    # apply read data
+    # @param [Hash] data configure data
+    def apply_configure(data)
+      @logger_path  = data['logger_path']  || @logger_path
+      @logger_level = data['logger_level'] || @logger_level
+      @pid_path     = data['pid_path']     || @pid_path
+      @suspend_file = data['suspend_file'] || @suspend_file
+      @sleep_time   = data['sleep_time']   || @sleep_time
+    end
 
     def dup
     end

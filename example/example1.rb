@@ -1,16 +1,9 @@
 require 'simple_daemon'
 
-daemon = SimpleDaemon::Daemon.new(true)
-
-# config settings(direct setting)
-daemon.configure do |config|
-  config.logger_path = '/tmp/sample.log'
-  config.sleep_time  = 3
-end
-
-yml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
-File.write(yml_path, <<YAML)
-pid_path: /tmp/foo.pid
+yaml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
+pid_path  = File.join(Dir.mktmpdir('example'), 'example.pid')
+File.write(yaml_path, <<YAML)
+pid_path: #{ pid_path }
 other_opt:
   hash:
     key1: val1
@@ -20,8 +13,11 @@ other_opt:
     - bar
 YAML
 
+# true is verbose
+daemon = SimpleDaemon::Daemon.new(true)
+
 # config settings(load file)
-daemon.configure_load(yml_path)
+daemon.configure_load(yaml_path)
 
 loop_count = 0
 daemon.run(false) do |d|

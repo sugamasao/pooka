@@ -6,36 +6,38 @@ module SimpleDaemon
   class PIDManager
     attr_reader :path
 
-    # @param [String] path PIDファイルを作成するパス
-    # @param [Fixnum] pid ファイル内に置くpidの値
+    # @param [String] path pid file
+    # @param [Fixnum] pid process id
     def initialize(path, pid)
       @path = Pathname(path)
       @pid  = pid
     end
 
-    # PIDファイルを作成する
-    # @return [Boolean] 作成できたら true
+    # create pid file
+    # @return [Boolean] create true
     def create
       return false unless create_pid_file?(@path)
 
-      File.write(@path.to_s, @pid)
+      File.write(@path, @pid)
       true
     end
 
-    # PIDファイルの削除を行う
+    # delete pid file
     def delete
       @path.delete if @path.file?
     end
 
     # PIDファイルを指定のpathで作成しなおす
-    # @return [Boolean] 作成できたらtrue
+    # @param [String] path pid file path
+    # @return [Boolean] create true
     def rename(path)
       path = Pathname(path)
+
+      # nothing to do
+      return true if @path == path
+
       return false unless create_pid_file?(path)
-
-      File.write(path.to_s, @pid)
-
-      return false unless path.file?
+      File.write(path, @pid)
 
       delete
       @path = path
@@ -46,7 +48,7 @@ module SimpleDaemon
     private
 
     # can create pid file?
-    # @param [Pathname] path pid filepath
+    # @param [Pathname] path pid file path
     # @return [Boolean] true is can create
     def create_pid_file?(path)
       # already path created.

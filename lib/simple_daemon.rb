@@ -27,16 +27,6 @@ module SimpleDaemon
       @reload_logfile = false
     end
 
-    # configuration params
-    # * sleep_time ... sleep time(Fixnum)
-    # * pid_path ... file path(String)
-    # * logger_path ... file path(String)
-    # * logger_level ... Logger Level(Fixnum)
-    # * suspend_file ... suspend_file path(String)
-    def configure
-      yield configuration
-    end
-
     def configure_load(filename)
       @configuration.load(filename)
     end
@@ -57,19 +47,27 @@ module SimpleDaemon
         loop do
           inspect_daemon_information if @verbose
 
-          yield self unless suspend?
-
           if shutdown?
             @logger.info 'Daemon will be Shutdown...' if @verbose
             break
           end
 
+          if @reload_configuration
+            reload_configuration
+            @reload_configuration = false
+          end
+
+          if @reload_logfile
+            @logger.reopen
+            @reload_logfile = false
+          end
+
+          yield self unless suspend?
+
           if sleep?
             @logger.info "Daemon Sleep #{ configuration.sleep_time } sec." if @verbose
             sleeping(configuration.sleep_time)
           end
-
-          @logger.reopen if @reload_logfile
         end
 
       rescue => e
@@ -131,7 +129,7 @@ module SimpleDaemon
     # Suppression daemon.run block
     # @return [Boolean] true is exists suspend file
     def suspend?
-      File.file?(@configuration.suspend_file.to_s)
+      @configuration.suspend_file?
     end
 
     # daemon start callback
@@ -148,7 +146,20 @@ module SimpleDaemon
     # @param [Fixnum] sec seep seconds
     def sleeping(sec)
       sec.to_i.times do
+        break if shutdown?
         sleep 1
+      end
+    end
+
+    # configuration reload
+    def reload_configuration
+      begin
+        @configuration.reload
+      rescue ConfigurationError => e
+        @logger.warn "Configuration ReLoad Fail. #{ e.message }"
+      else
+        @logger.reopen(@configuration.logger_path, @configuration.logger_level)
+        @pid.rename(@configuration.pid_path)
       end
     end
 
