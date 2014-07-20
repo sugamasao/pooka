@@ -3,7 +3,6 @@ require_relative 'simple_daemon/configuration'
 require_relative 'simple_daemon/logger_manager'
 require_relative 'simple_daemon/pid_manager'
 require_relative 'simple_daemon/callback_controller'
-require 'pry'
 
 # namespace of SimpleDaemon
 module SimpleDaemon
