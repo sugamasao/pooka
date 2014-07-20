@@ -2,7 +2,7 @@ require_relative 'simple_daemon/version'
 require_relative 'simple_daemon/configuration'
 require_relative 'simple_daemon/logger_manager'
 require_relative 'simple_daemon/pid_manager'
-
+require_relative 'simple_daemon/callback_controller'
 require 'pry'
 
 # namespace of SimpleDaemon
@@ -19,8 +19,7 @@ module SimpleDaemon
     # end
     def initialize(verbose = false)
       @configuration = Configuration.new
-      @before_callback = []
-      @after_callback = []
+      @callback_controller = CallbackController.new
       @onset_of_sleep = true
       @runnable = true
       @verbose = verbose
@@ -85,17 +84,20 @@ module SimpleDaemon
     # simple daemon setup
     # setup to callback
     def register_callback
-      @before_callback << lambda do
+      default_before_callback = lambda do
         @logger = LoggerManager.new(@configuration.logger_path, @configuration.logger_level)
         @logger.open
         @pid = PIDManager.new(@configuration.pid_path, $PROCESS_ID)
         @pid.create
       end
 
-      @after_callback << lambda do
+      default_after_callback = lambda do
         @pid.delete
         @logger.close
       end
+
+      @callback_controller.add_before_callback(default_before_callback)
+      @callback_controller.add_after_callback(default_after_callback)
     end
 
     def register_signal
@@ -134,16 +136,12 @@ module SimpleDaemon
 
     # daemon start callback
     def before_process
-      @before_callback.each do |callback|
-        callback.call
-      end
+      @callback_controller.fire_before_callback
     end
 
     # daemon end callback
     def after_process
-      @after_callback.reverse.each do |callback|
-        callback.call
-      end
+      @callback_controller.fire_after_callback
     end
 
     # daemon sleep
