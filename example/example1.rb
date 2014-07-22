@@ -23,9 +23,9 @@ loop_count = 0
 daemon.run(false) do |d|
   d.logger.info 'stop signal to Ctrl-C or SIGTERM'
   d.logger.info 'daemon running...'
-  d.logger.info d.configuration['pid_path']
-  d.logger.info d.configuration['other_opt']['hash']['key1']
-  d.logger.info d.configuration['other_opt']['list'][0]
+  d.logger.info d.config['pid_path']
+  d.logger.info d.config['other_opt']['hash']['key1']
+  d.logger.info d.config['other_opt']['list'][0]
 
   # 3 times loop before daemon shutdown
   loop_count += 1

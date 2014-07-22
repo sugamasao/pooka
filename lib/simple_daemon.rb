@@ -8,7 +8,7 @@ require_relative 'simple_daemon/callback_controller'
 module SimpleDaemon
   # SimpleDaemon Main Class
   class Daemon
-    attr_reader :configuration, :logger
+    attr_reader :config, :logger
     attr_accessor :onset_of_sleep, :runnable
 
     # using
@@ -17,7 +17,7 @@ module SimpleDaemon
     #  conf.attr = 'val'
     # end
     def initialize(verbose = false)
-      @configuration = Configuration.new
+      @config = Configuration.new
       @callback_controller = CallbackController.new
       @onset_of_sleep = true
       @runnable = true
@@ -27,7 +27,7 @@ module SimpleDaemon
     end
 
     def configure_load(filename)
-      @configuration.load(filename)
+      @config.load(filename)
     end
 
     # using
@@ -64,8 +64,8 @@ module SimpleDaemon
           yield self unless suspend?
 
           if sleep?
-            @logger.info "Daemon Sleep #{ configuration.sleep_time } sec." if @verbose
-            sleeping(configuration.sleep_time)
+            @logger.info "Daemon Sleep #{ config.sleep_time } sec." if @verbose
+            sleeping(config.sleep_time)
           end
         end
 
@@ -82,9 +82,9 @@ module SimpleDaemon
     # setup to callback
     def register_callback
       default_before_callback = lambda do
-        @logger = LoggerManager.new(@configuration.logger_path, @configuration.logger_level)
+        @logger = LoggerManager.new(@config.logger_path, @config.logger_level)
         @logger.open
-        @pid = PIDManager.new(@configuration.pid_path, $PROCESS_ID)
+        @pid = PIDManager.new(@config.pid_path, $PROCESS_ID)
         @pid.create
       end
 
@@ -128,7 +128,7 @@ module SimpleDaemon
     # Suppression daemon.run block
     # @return [Boolean] true is exists suspend file
     def suspend?
-      @configuration.suspend_file?
+      @config.suspend_file?
     end
 
     # daemon start callback
@@ -153,12 +153,12 @@ module SimpleDaemon
     # configuration reload
     def reload_configuration
       begin
-        @configuration.reload
+        @config.reload
       rescue ConfigurationError => e
         @logger.warn "Configuration ReLoad Fail. #{ e.message }"
       else
-        @logger.reopen(@configuration.logger_path, @configuration.logger_level)
-        @pid.rename(@configuration.pid_path)
+        @logger.reopen(@config.logger_path, @config.logger_level)
+        @pid.rename(@config.pid_path)
       end
     end
 
