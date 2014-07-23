@@ -4,7 +4,7 @@ require 'forwardable'
 
 module SimpleDaemon
   # Configuration Error Class
-  class ConfigurationError < StandardError;end
+  class ConfigurationError < StandardError; end
 
   # SimpleDaemon Configuration Class.
   class Configuration
