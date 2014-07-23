@@ -37,9 +37,8 @@ module SimpleDaemon
     # @return [Hash] Load Data
     # @raise [ConfigurationError] File NotFound or File format Error
     def load(filename)
-
       unless File.file?(filename.to_s)
-        raise ConfigurationError.new("Configuration YAML File NotFound(#{ filename })")
+        raise ConfigurationError, "Configuration YAML File NotFound(#{ filename })"
       end
 
       @configure_filename = filename
@@ -47,7 +46,7 @@ module SimpleDaemon
         @data = YAML.load_file(@configure_filename)
         apply_configure(@data)
       rescue Psych::SyntaxError => e
-        raise ConfigurationError.new("Configuration YAML Format Error(#{ filename }) - #{ e.message }")
+        raise ConfigurationError, "Configuration YAML Format Error(#{ filename }) - #{ e.message }"
       end
     end
 
