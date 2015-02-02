@@ -1,5 +1,5 @@
 module SimpleDaemon
-  class SignalController
+  class SignalHandler
 
     def initialize
       @int  = false

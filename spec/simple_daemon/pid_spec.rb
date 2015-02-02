@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'tmpdir'
 
-describe SimpleDaemon::PIDManager do
+describe SimpleDaemon::PID do
   let(:pid_body) { '100' }
-  subject(:pid) { SimpleDaemon::PIDManager.new(path, pid_body) }
+  subject(:pid) { SimpleDaemon::PID.new(path, pid_body) }
 
   context 'PID#create' do
     context 'creatable pid file' do

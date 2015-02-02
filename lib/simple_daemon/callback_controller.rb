@@ -1,5 +1,5 @@
 module SimpleDaemon
-  # Daemon run before/aftar callback class
+  # Daemon run before/after callback class
   class CallbackController
     def initialize
       @before_callback = []

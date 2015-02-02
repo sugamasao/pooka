@@ -4,7 +4,7 @@ require 'forwardable'
 
 module SimpleDaemon
   # Logger Management Class
-  class LoggerManager
+  class Logger
     extend Forwardable
 
     def_delegators :@logger, :fatal, :error, :warn, :info, :debug
@@ -24,9 +24,9 @@ module SimpleDaemon
     # if Logger open failed. using STDERR device
     def open
       begin
-        @logger = Logger.new(@path)
+        @logger = ::Logger.new(@path)
       rescue => e
-        @logger = Logger.new($stderr)
+        @logger = ::Logger.new($stderr)
         @logger.warn "Logger File Create Failed(using STDERR device). [#{e.message}] path=[#{@path}] [#{@path.class}]"
       ensure
         @logger.level = find_logger_level(@level)
@@ -44,7 +44,7 @@ module SimpleDaemon
     def reopen(new_logfile_path = nil, new_level = nil)
       old_logger = @logger
       begin
-        @logger = Logger.new(new_logfile_path || @path)
+        @logger = ::Logger.new(new_logfile_path || @path)
         @logger.level = find_logger_level(new_level || @level)
         old_logger.close
       rescue
@@ -57,15 +57,15 @@ module SimpleDaemon
 
     # find logger level
     # @param [String] level Logger Level
-    # @return [Fixnum] Logger::DEBUG .. Logger::WARN level
+    # @return [Fixnum] ::Logger::DEBUG .. ::Logger::WARN level
     def find_logger_level(level)
-      Logger::Severity.constants.each do |logger_defined_level|
+      ::Logger::Severity.constants.each do |logger_defined_level|
         if level.to_s.upcase == logger_defined_level.to_s.upcase
-          return Logger.const_get logger_defined_level
+          return ::Logger.const_get logger_defined_level
         end
       end
 
-      Logger::DEBUG # it's default.
+      ::Logger::DEBUG # it's default.
     end
   end
 end

@@ -1,8 +1,9 @@
 require_relative 'simple_daemon/version'
 require_relative 'simple_daemon/configuration'
-require_relative 'simple_daemon/logger_manager'
-require_relative 'simple_daemon/pid_manager'
+require_relative 'simple_daemon/logger'
+require_relative 'simple_daemon/pid'
 require_relative 'simple_daemon/callback_controller'
+require_relative 'simple_daemon/signal_handler'
 
 # namespace of SimpleDaemon
 module SimpleDaemon
@@ -24,6 +25,7 @@ module SimpleDaemon
       @verbose = verbose
       @reload_configuration = false
       @reload_logfile = false
+      @signal = SignalHandler.new
     end
 
     def configure_load(filename)
@@ -61,6 +63,9 @@ module SimpleDaemon
             @reload_logfile = false
           end
 
+          # signalを受け取ったらコールバックを実行するようにする
+          @signal.
+
           yield self unless suspend?
 
           if sleep?
@@ -82,9 +87,9 @@ module SimpleDaemon
     # setup to callback
     def register_callback
       default_before_callback = lambda do
-        @logger = LoggerManager.new(@config.logger_path, @config.logger_level)
+        @logger = Logger.new(@config.logger_path, @config.logger_level)
         @logger.open
-        @pid = PIDManager.new(@config.pid_path, $PROCESS_ID)
+        @pid = PID.new(@config.pid_path, $PROCESS_ID)
         @pid.create
       end
 
@@ -102,7 +107,7 @@ module SimpleDaemon
         @runnable = false
       end
 
-      Signal.trap(:TERM) do
+      Signal.trap(:TERM) do |sig|
         @runnable = false
       end
 

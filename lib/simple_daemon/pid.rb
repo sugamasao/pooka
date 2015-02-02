@@ -3,7 +3,7 @@ require 'pathname'
 
 module SimpleDaemon
   # PID File Manager.
-  class PIDManager
+  class PID
     attr_reader :path
 
     # @param [String] path pid file
