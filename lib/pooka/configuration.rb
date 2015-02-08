@@ -2,11 +2,11 @@ require 'tmpdir'
 require 'yaml'
 require 'forwardable'
 
-module SimpleDaemon
+module Pooka
   # Configuration Error Class
   class ConfigurationError < StandardError; end
 
-  # SimpleDaemon Configuration Class.
+  # Pooka Configuration Class.
   class Configuration
     extend Forwardable
 
@@ -27,7 +27,7 @@ module SimpleDaemon
       # default settings.
       @logger_path  = nil
       @logger_level = nil
-      @pid_path     = File.join(Dir.mktmpdir('simple_daemon'), 'simple_daemon.pid')
+      @pid_path     = File.join(Dir.mktmpdir('pooka'), 'pooka.pid')
       @suspend_file = nil
       @sleep_time   = 10 # sec
     end

@@ -1,4 +1,4 @@
-require 'simple_daemon'
+require 'pooka'
 
 yaml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
 pid_path  = File.join(Dir.mktmpdir('example'), 'example.pid')
@@ -14,7 +14,7 @@ other_opt:
 YAML
 
 # true is verbose
-daemon = SimpleDaemon::Daemon.new(true)
+daemon = Pooka::Daemon.new(true)
 
 # config settings(load file)
 daemon.configure_load(yaml_path)

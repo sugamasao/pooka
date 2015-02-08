@@ -1,4 +1,4 @@
-module SimpleDaemon
+module Pooka
   # Daemon run before/after callback class
   class CallbackController
     def initialize

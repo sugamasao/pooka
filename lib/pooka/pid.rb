@@ -1,7 +1,7 @@
 # coding: utf-8
 require 'pathname'
 
-module SimpleDaemon
+module Pooka
   # PID File Manager.
   class PID
     attr_reader :path

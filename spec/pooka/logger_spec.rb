@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'tmpdir'
 require 'logger'
 
-describe SimpleDaemon::Logger do
+describe Pooka::Logger do
   let(:create_log_path) { File.join(Dir.tmpdir, 'logger.log') }
 
   context '#open' do
@@ -16,7 +16,7 @@ describe SimpleDaemon::Logger do
     end
 
     it 'Create Logger(STDERR)' do
-      logger_manager = SimpleDaemon::Logger.new($stderr, 'info')
+      logger_manager = Pooka::Logger.new($stderr, 'info')
       logger_manager.open
       logger = logger_manager.instance_variable_get(:@logger)
       expect(logger.level).to eq ::Logger::INFO
@@ -25,7 +25,7 @@ describe SimpleDaemon::Logger do
     end
 
     it 'Not Create Logger(fallback STDERR)' do
-      logger_manager = SimpleDaemon::Logger.new(File.dirname(create_log_path), 'foo')
+      logger_manager = Pooka::Logger.new(File.dirname(create_log_path), 'foo')
       logger_manager.open
       logger = logger_manager.instance_variable_get(:@logger)
       expect(logger.level).to eq ::Logger::DEBUG
@@ -34,7 +34,7 @@ describe SimpleDaemon::Logger do
     end
 
     it 'Create Logger' do
-      logger_manager = SimpleDaemon::Logger.new(create_log_path, 'INFO')
+      logger_manager = Pooka::Logger.new(create_log_path, 'INFO')
       logger_manager.open
       logger_manager.info 'hi'
       expect(File.readlines(create_log_path).last).to match /hi/
@@ -54,7 +54,7 @@ describe SimpleDaemon::Logger do
     end
 
     it 'Reopen Logger(STDERR -> FILE)' do
-      logger_manager = SimpleDaemon::Logger.new($stderr, 'info')
+      logger_manager = Pooka::Logger.new($stderr, 'info')
       logger_manager.open
       logger_manager.reopen(create_log_path, 'WARN')
       logger = logger_manager.instance_variable_get(:@logger)
@@ -64,7 +64,7 @@ describe SimpleDaemon::Logger do
     end
 
     it 'Reopen Fail Logger(STDERR -> STDERR' do
-      logger_manager = SimpleDaemon::Logger.new($stderr, 'info')
+      logger_manager = Pooka::Logger.new($stderr, 'info')
       logger_manager.open
       logger_manager.reopen(File.join(create_log_path, 'foo'), 'WARN')
       logger = logger_manager.instance_variable_get(:@logger)

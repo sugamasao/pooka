@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe SimpleDaemon::SignalHandler do
+describe Pooka::SignalHandler do
   let(:hup_number)  {  1 }
   let(:int_number)  {  2 }
   let(:term_number) { 15 }
   let(:usr1_number) { 30 }
 
-  subject(:controller) { SimpleDaemon::SignalHandler.new }
+  subject(:controller) { Pooka::SignalHandler.new }
 
   context 'change signal state' do
     before do
-      @controller = SimpleDaemon::SignalHandler.new
+      @controller = Pooka::SignalHandler.new
     end
 
     it 'change hup' do
@@ -37,7 +37,7 @@ describe SimpleDaemon::SignalHandler do
 
   context '#received_signal?' do
     before do
-      @controller = SimpleDaemon::SignalHandler.new
+      @controller = Pooka::SignalHandler.new
     end
 
     it 'hup true' do

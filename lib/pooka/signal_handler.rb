@@ -1,4 +1,4 @@
-module SimpleDaemon
+module Pooka
   class SignalHandler
 
     def initialize

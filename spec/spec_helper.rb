@@ -5,7 +5,7 @@ SimpleCov.start do
 end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'simple_daemon'
+require 'pooka'
 
 RSpec.configure do |config|
   config.raise_errors_for_deprecations!

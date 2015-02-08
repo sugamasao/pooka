@@ -2,7 +2,7 @@
 require 'logger'
 require 'forwardable'
 
-module SimpleDaemon
+module Pooka
   # Logger Management Class
   class Logger
     extend Forwardable

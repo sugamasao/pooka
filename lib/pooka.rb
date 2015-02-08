@@ -1,19 +1,19 @@
-require_relative 'simple_daemon/version'
-require_relative 'simple_daemon/configuration'
-require_relative 'simple_daemon/logger'
-require_relative 'simple_daemon/pid'
-require_relative 'simple_daemon/callback_controller'
-require_relative 'simple_daemon/signal_handler'
+require_relative 'pooka/version'
+require_relative 'pooka/configuration'
+require_relative 'pooka/logger'
+require_relative 'pooka/pid'
+require_relative 'pooka/callback_controller'
+require_relative 'pooka/signal_handler'
 
-# namespace of SimpleDaemon
-module SimpleDaemon
-  # SimpleDaemon Main Class
+# namespace of Pooka
+module Pooka
+  # Pooka Main Class
   class Daemon
     attr_reader :config, :logger
     attr_accessor :onset_of_sleep, :runnable
 
     # using
-    # daemon = SimpleDaemon.new
+    # daemon = Pooka.new
     # daemon.configure do |conf|
     #  conf.attr = 'val'
     # end

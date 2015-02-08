@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'simple_daemon/version'
+require 'pooka/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'simple_daemon'
-  spec.version       = SimpleDaemon::VERSION
+  spec.name          = 'pooka'
+  spec.version       = Pooka::VERSION
   spec.authors       = ['sugamasao']
   spec.email         = ['sugamasao@gmail.com']
   spec.summary       = 'Simply Daemon Tool'
   spec.description   = 'Simply Daemon Tool Your Program to Daemonize'
-  spec.homepage      = 'https://github.com/sugamasao/simple_daemon'
+  spec.homepage      = 'https://github.com/sugamasao/pooka'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
