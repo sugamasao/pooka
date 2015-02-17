@@ -2,13 +2,14 @@ require_relative 'pooka/version'
 require_relative 'pooka/configuration'
 require_relative 'pooka/logger'
 require_relative 'pooka/pid'
+require_relative 'pooka/worker'
 require_relative 'pooka/callback_controller'
 require_relative 'pooka/signal_handler'
 
 # namespace of Pooka
 module Pooka
   # Pooka Main Class
-  class Daemon
+  class Master
     attr_reader :config, :logger
     attr_accessor :onset_of_sleep, :runnable
 
@@ -17,7 +18,8 @@ module Pooka
     # daemon.configure do |conf|
     #  conf.attr = 'val'
     # end
-    def initialize(verbose = false)
+    def initialize(worker, verbose = false)
+      @worker = worker
       @config = Configuration.new
       @callback_controller = CallbackController.new
       @onset_of_sleep = true
@@ -38,8 +40,15 @@ module Pooka
     # end
     def run(daemonize = true)
       begin
+        require 'pry'
+        binding.pry
         Process.daemon if daemonize
 
+        register_callback
+        before_process
+
+        @worker.run(@config, @logger)
+=begin
         register_signal
         register_callback
 
@@ -74,11 +83,18 @@ module Pooka
           end
         end
 
+=end
       rescue => e
+        binding.pry
         @logger.fatal "#{ e.message }/#{ e.class } -> #{ e.backtrace }"
       ensure
         after_process
       end
+    end
+
+    def sleep
+      @logger.info "Daemon Sleep #{ config.sleep_time } sec." if @verbose
+      sleeping(config.sleep_time)
     end
 
     private
@@ -148,12 +164,12 @@ module Pooka
 
     # daemon sleep
     # @param [Fixnum] sec seep seconds
-    def sleeping(sec)
-      sec.to_i.times do
-        break if shutdown?
-        sleep 1
-      end
-    end
+#    def sleeping(sec)
+#      sec.to_i.times do
+#        break if shutdown?
+#        sleep 1
+#      end
+#    end
 
     # configuration reload
     def reload_configuration

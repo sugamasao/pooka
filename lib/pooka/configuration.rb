@@ -19,7 +19,7 @@ module Pooka
     # * logger_level - logger level(for Logger class)
     # * pid_path - Process ID Written path
     # * suspend_file - Daemon pause file(lock file path)
-    # * sleep_time - Daemon#run next turn wait time(sec)
+    # * sleep_time - Master#run next turn wait time(sec)
     def initialize
       @data = {}
       @configure_filename = nil

@@ -14,20 +14,20 @@ other_opt:
 YAML
 
 # true is verbose
-daemon = Pooka::Daemon.new(true)
 
-# config settings(load file)
-daemon.configure_load(yaml_path)
+class MyWorker < Pooka::Worker
+  def run(c, logger)
+    until @stop do
+      logger.info 'hi'
+      sleeping(c.sleep_time)
+    end
+  end
 
-loop_count = 0
-daemon.run(false) do |d|
-  d.logger.info 'stop signal to Ctrl-C or SIGTERM'
-  d.logger.info 'daemon running...'
-  d.logger.info d.config['pid_path']
-  d.logger.info d.config['other_opt']['hash']['key1']
-  d.logger.info d.config['other_opt']['list'][0]
-
-  # 3 times loop before daemon shutdown
-  loop_count += 1
-  d.runnable = false if loop_count == 3
+  def stop
+    @stop = true
+  end
 end
+
+pooka = Pooka::Master.new(MyWorker.new, false)
+pooka.configure_load yaml_path
+pooka.run(false)
