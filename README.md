@@ -18,6 +18,68 @@ Or install it yourself as:
 
 ## Usage
 
+### Simple Use
+
+```ruby
+require 'pooka`
+
+class Worker
+  def run_before(configure, logger)
+    logger.info "run before: #{ configure }"
+  end
+
+  def run(configure, logger)
+    until @stop do
+      logger.info 'run worker'
+      sleeping configure.sleep_time
+    end
+  end
+
+  def run_after(configure, logger)
+    logger.info "run after: #{ configure }"
+  end
+
+  # worker sleep
+  # @param [Fixnum] sec seep seconds
+  def sleeping(sec)
+    sec.to_i.times do
+      break if @stop
+      sleep 1
+    end
+  end
+
+  # callback for sigterm/int
+  def stop
+    @stop = true
+  end
+
+  # callback for sighup
+  def reload
+    @reload = true
+  end
+end
+
+pooka = Pooka::Master.new(Worker.new, false)
+pooka.run(false)
+```
+
+### using config file.
+
+```ruby
+pooka = Pooka::Master.new(Worker.new, false)
+pooka.configure_load yaml_path
+pooka.run(false)
+```
+
+worker use config value
+
+```ruby
+def run(configure, logger)
+  puts configure['test']
+end
+```
+
+
 TODO: Write usage instructions here
 
 ## Contributing

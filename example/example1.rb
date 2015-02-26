@@ -1,4 +1,5 @@
 require 'pooka'
+require 'pry'
 
 yaml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
 pid_path  = File.join(Dir.mktmpdir('example'), 'example.pid')
@@ -13,21 +14,42 @@ other_opt:
     - bar
 YAML
 
-# true is verbose
+class Worker
+  def run_before(configure, logger)
+    logger.info "run before: #{ configure }"
+  end
 
-class MyWorker < Pooka::Worker
-  def run(c, logger)
+  def run(configure, logger)
     until @stop do
-      logger.info 'hi'
-      sleeping(c.sleep_time)
+      logger.info 'run worker'
+      sleeping configure.sleep_time
     end
   end
 
+  def run_after(configure, logger)
+    logger.info "run after: #{ configure }"
+  end
+
+  # worker sleep
+  # @param [Fixnum] sec seep seconds
+  def sleeping(sec)
+    sec.to_i.times do
+      break if @stop
+      sleep 1
+    end
+  end
+
+  # callback for sigterm/int
   def stop
     @stop = true
   end
+
+  # callback for sighup
+  def reload
+    @reload = true
+  end
 end
 
-pooka = Pooka::Master.new(MyWorker.new, false)
+pooka = Pooka::Master.new(Worker.new, false)
 pooka.configure_load yaml_path
 pooka.run(false)

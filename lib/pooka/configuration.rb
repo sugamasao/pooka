@@ -1,5 +1,6 @@
 require 'tmpdir'
 require 'yaml'
+require 'json'
 require 'forwardable'
 
 module Pooka
@@ -12,13 +13,12 @@ module Pooka
 
     def_delegators :@data, :[]
 
-    attr_accessor :logger_path, :logger_level, :pid_path, :suspend_file, :sleep_time
+    attr_accessor :logger_path, :logger_level, :pid_path, :sleep_time
 
     # Configuration default settings
     # * logger_path - logger file path(for Logger class)
     # * logger_level - logger level(for Logger class)
     # * pid_path - Process ID Written path
-    # * suspend_file - Daemon pause file(lock file path)
     # * sleep_time - Master#run next turn wait time(sec)
     def initialize
       @data = {}
@@ -28,8 +28,7 @@ module Pooka
       @logger_path  = nil
       @logger_level = nil
       @pid_path     = File.join(Dir.mktmpdir('pooka'), 'pooka.pid')
-      @suspend_file = nil
-      @sleep_time   = 10 # sec
+      @sleep_time   = 60 # sec
     end
 
     # settings load
@@ -43,8 +42,10 @@ module Pooka
 
       @configure_filename = filename
       begin
-        @data = YAML.load_file(@configure_filename)
+        @data = load_file(@configure_filename)
         apply_configure(@data)
+      rescue JSON::ParserError => e
+        raise ConfigurationError, "Configuration JSON Format Error(#{ filename }) - #{ e.message }"
       rescue Psych::SyntaxError => e
         raise ConfigurationError, "Configuration YAML Format Error(#{ filename }) - #{ e.message }"
       end
@@ -56,19 +57,22 @@ module Pooka
       load(@configure_filename)
     end
 
-    # Dump dat
-    # @return [String] data
-    def dump_configuration
+    def to_s
       @data.to_s
     end
 
-    # suspend file exists?
-    # @return [Boolean] true is exits
-    def suspend_file?
-      File.file?(@suspend_file.to_s)
-    end
-
     private
+
+    def load_file(filename)
+      case File.extname(filename).downcase
+        when 'yml', 'yaml'
+          YAML.load_file(filename)
+        when 'json'
+          JSON.parse(Fiel.read(filename))
+        else
+          YAML.load_file(filename)
+      end
+    end
 
     # apply read data
     # @param [Hash] data configure data
@@ -76,11 +80,7 @@ module Pooka
       @logger_path  = data['logger_path']  || @logger_path
       @logger_level = data['logger_level'] || @logger_level
       @pid_path     = data['pid_path']     || @pid_path
-      @suspend_file = data['suspend_file'] || @suspend_file
       @sleep_time   = data['sleep_time']   || @sleep_time
-    end
-
-    def dup
     end
   end
 end
