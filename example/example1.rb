@@ -1,9 +1,11 @@
 require 'pooka'
+require 'pry'
 
 yaml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
 pid_path  = File.join(Dir.mktmpdir('example'), 'example.pid')
 File.write(yaml_path, <<YAML)
 pid_path: #{ pid_path }
+sleep_time: 5
 other_opt:
   hash:
     key1: val1
@@ -13,21 +15,42 @@ other_opt:
     - bar
 YAML
 
-# true is verbose
-daemon = Pooka::Daemon.new(true)
+class Worker
+  def run_before(configure, logger)
+    logger.info "run before: #{ configure }"
+  end
 
-# config settings(load file)
-daemon.configure_load(yaml_path)
+  def run(configure, logger)
+    until @stop do
+      logger.info 'run worker'
+      sleeping configure.sleep_time
+    end
+  end
 
-loop_count = 0
-daemon.run(false) do |d|
-  d.logger.info 'stop signal to Ctrl-C or SIGTERM'
-  d.logger.info 'daemon running...'
-  d.logger.info d.config['pid_path']
-  d.logger.info d.config['other_opt']['hash']['key1']
-  d.logger.info d.config['other_opt']['list'][0]
+  def run_after(configure, logger)
+    logger.info "run after: #{ configure }"
+  end
 
-  # 3 times loop before daemon shutdown
-  loop_count += 1
-  d.runnable = false if loop_count == 3
+  # worker sleep
+  # @param [Fixnum] sec seep seconds
+  def sleeping(sec)
+    sec.to_i.times do
+      break if @stop
+      sleep 1
+    end
+  end
+
+  # callback for sigterm/int
+  def stop
+    @stop = true
+  end
+
+  # callback for sighup
+  def reload
+    @reload = true
+  end
 end
+
+pooka = Pooka::Master.new(Worker.new, false)
+pooka.configure_load yaml_path
+pooka.run(false)
