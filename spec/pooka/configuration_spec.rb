@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tmpdir'
+require 'pathname'
 
 describe Pooka::Configuration do
   context 'fail configuration load' do
@@ -10,28 +11,28 @@ describe Pooka::Configuration do
     it 'file not found' do
       expect {
         Pooka::Configuration.new.load('/path/to/config')
-      }.to raise_error Pooka::ConfigurationFileNotFound
+      }.to raise_error Pooka::Configuration::ConfigurationFileNotFound
     end
 
     it 'yaml parse error' do
       expect {
         File.write(yaml_path, '%') # broken data
         Pooka::Configuration.new.load(yaml_path)
-      }.to raise_error Pooka::ConfigurationFileParseError
+      }.to raise_error Pooka::Configuration::ConfigurationFileParseError
     end
 
     it 'yaml parse error(no extname fallback to yaml)' do
       expect {
         File.write(yaml_path_no_extname, '%') # broken data
         Pooka::Configuration.new.load(yaml_path_no_extname)
-      }.to raise_error Pooka::ConfigurationFileParseError
+      }.to raise_error Pooka::Configuration::ConfigurationFileParseError
     end
 
     it 'json parse error' do
       expect {
         File.write(json_path, '') # broken data
         Pooka::Configuration.new.load(json_path)
-      }.to raise_error Pooka::ConfigurationFileParseError
+      }.to raise_error Pooka::Configuration::ConfigurationFileParseError
     end
   end
 
@@ -70,6 +71,26 @@ describe Pooka::Configuration do
       end
     end
   end
+
+  describe 'config file pattern' do
+    let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }
+    before do
+      File.write(yaml_path, 'foo: bar')
+    end
+
+    it 'config file is nil' do
+      expect {
+        Pooka::Configuration.new.load(nil)
+      }.to raise_error Pooka::Configuration::ConfigurationFileNotFound
+    end
+
+    it 'config file is Pathname' do
+      c = Pooka::Configuration.new
+      c.load(Pathname(yaml_path))
+      expect(c['foo']).to eq 'bar'
+    end
+  end
+
 
   describe 'reload configuration' do
     let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }

@@ -4,14 +4,17 @@ require 'json'
 require 'forwardable'
 
 module Pooka
-  # Configuration file not found Error Class
-  class ConfigurationFileNotFound < StandardError; end
-
-  # Configuration Parse Error Class
-  class ConfigurationFileParseError < StandardError; end
-
   # Pooka Configuration Class.
   class Configuration
+    # @abstract abstract Configuration Error class
+    class ConfigurationError < StandardError;end
+
+    # Configuration file not found Error Class
+    class ConfigurationFileNotFound < ConfigurationError; end
+
+    # Configuration Parse Error Class
+    class ConfigurationFileParseError < ConfigurationError; end
+    
     extend Forwardable
 
     # default value
@@ -33,11 +36,12 @@ module Pooka
     end
 
     # settings load
-    # @param [String] filename configuration path(Format is YAML)
+    # @param [String/Pathname] filename configuration path(Format is YAML)
     # @return [Hash] Load Data
     # @raise [ConfigurationError] File NotFound or File format Error
     def load(filename)
-      unless File.file?(filename.to_s)
+      filename = filename.to_s # nil or Pathname to stringify
+      unless File.file?(filename)
         raise ConfigurationFileNotFound, "Configuration File NotFound(#{ filename })"
       end
 
