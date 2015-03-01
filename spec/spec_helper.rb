@@ -6,6 +6,7 @@ end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'pooka'
+require 'pry'
 
 RSpec.configure do |config|
   config.raise_errors_for_deprecations!

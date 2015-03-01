@@ -4,31 +4,32 @@ require 'json'
 require 'forwardable'
 
 module Pooka
-  # Configuration Error Class
-  class ConfigurationError < StandardError; end
+  # Configuration file not found Error Class
+  class ConfigurationFileNotFound < StandardError; end
+
+  # Configuration Parse Error Class
+  class ConfigurationFileParseError < StandardError; end
 
   # Pooka Configuration Class.
   class Configuration
     extend Forwardable
 
+    # default value
+    DEFAULT_SLEEP_TIME = 60
+
+    # default value
+    DEFAULT_PID_PATH = File.join(Dir.mktmpdir('pooka'), 'pooka.pid')
+
     def_delegators :@data, :[]
 
     attr_accessor :logger_path, :logger_level, :pid_path, :sleep_time
 
-    # Configuration default settings
-    # * logger_path - logger file path(for Logger class)
-    # * logger_level - logger level(for Logger class)
-    # * pid_path - Process ID Written path
-    # * sleep_time - Master#run next turn wait time(sec)
     def initialize
       @data = {}
-      @configure_filename = nil
 
-      # default settings.
-      @logger_path  = nil
-      @logger_level = nil
-      @pid_path     = File.join(Dir.mktmpdir('pooka'), 'pooka.pid')
-      @sleep_time   = 60 # sec
+      # default value
+      @pid_path   = DEFAULT_PID_PATH
+      @sleep_time = DEFAULT_SLEEP_TIME
     end
 
     # settings load
@@ -37,17 +38,17 @@ module Pooka
     # @raise [ConfigurationError] File NotFound or File format Error
     def load(filename)
       unless File.file?(filename.to_s)
-        raise ConfigurationError, "Configuration YAML File NotFound(#{ filename })"
+        raise ConfigurationFileNotFound, "Configuration File NotFound(#{ filename })"
       end
 
       @configure_filename = filename
       begin
         @data = load_file(@configure_filename)
-        apply_configure(@data)
-      rescue JSON::ParserError => e
-        raise ConfigurationError, "Configuration JSON Format Error(#{ filename }) - #{ e.message }"
+        apply_pooka_configure(@data)
       rescue Psych::SyntaxError => e
-        raise ConfigurationError, "Configuration YAML Format Error(#{ filename }) - #{ e.message }"
+        raise ConfigurationFileParseError, "Configuration YAML Format Error - #{ e.message }"
+      rescue JSON::ParserError => e
+        raise ConfigurationFileParseError, "Configuration JSON Format Error - #{ e.message }"
       end
     end
 
@@ -65,22 +66,22 @@ module Pooka
 
     def load_file(filename)
       case File.extname(filename).downcase
-        when 'yml', 'yaml'
-          YAML.load_file(filename)
-        when 'json'
-          JSON.parse(Fiel.read(filename))
+        when '.yml', '.yaml'
+          YAML.load_file(filename) || {}
+        when '.json'
+          JSON.parse(File.read(filename))
         else
-          YAML.load_file(filename)
+          YAML.load_file(filename) || {}
       end
     end
 
-    # apply read data
+    # apply master process require data
     # @param [Hash] data configure data
-    def apply_configure(data)
-      @logger_path  = data['logger_path']  || @logger_path
-      @logger_level = data['logger_level'] || @logger_level
-      @pid_path     = data['pid_path']     || @pid_path
-      @sleep_time   = data['sleep_time']   || @sleep_time
+    def apply_pooka_configure(data)
+      @logger_path  = data['logger_path']
+      @logger_level = data['logger_level']
+      @pid_path     = data['pid_path']   || @pid_path
+      @sleep_time   = data['sleep_time'] || @sleep_time
     end
   end
 end
