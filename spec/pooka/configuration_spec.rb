@@ -67,7 +67,7 @@ describe Pooka::Configuration do
 
     context '#to_s' do
       it 'data to_string' do
-        expect(subject.to_s).to include({'foo' => 'bar'}.to_s)
+        expect(subject.to_s).to include({ 'foo' => 'bar' }.to_s)
       end
     end
   end
