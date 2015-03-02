@@ -41,7 +41,7 @@ describe Pooka::Configuration do
     before do
       File.write(yaml_path, 'foo: bar')
     end
-    subject { c = Pooka::Configuration.new; c.load(yaml_path);c }
+    subject { c = Pooka::Configuration.new; c.load(yaml_path); c }
 
     it 'get config value' do
       expect(subject['foo']).to eq 'bar'
@@ -96,7 +96,7 @@ describe Pooka::Configuration do
     before do
       File.write(yaml_path, 'foo: bar')
     end
-    subject { c = Pooka::Configuration.new; c.load(yaml_path);c }
+    subject { c = Pooka::Configuration.new; c.load(yaml_path); c }
 
     it '#reload' do
       expect {

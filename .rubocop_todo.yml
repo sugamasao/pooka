@@ -76,8 +76,8 @@ Style/SignalException:
 
 # Offense count: 6
 # Cop supports --auto-correct.
-Style/SpaceAfterSemicolon:
-  Enabled: false
+#Style/SpaceAfterSemicolon:
+#  Enabled: false
 
 # Offense count: 1
 # Cop supports --auto-correct.
