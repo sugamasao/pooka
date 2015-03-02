@@ -10,7 +10,9 @@ describe Pooka do
     let(:worker) {
       class Worker
         def run(_, __);end
+
         def run_before(_, __);end
+
         def run_after(_, __);end
       end
       Worker.new
