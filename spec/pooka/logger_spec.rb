@@ -46,7 +46,6 @@ describe Pooka::Logger do
   context '#reopen' do
     before do
       $stderr = File.open(File::NULL, 'w')
-
     end
     after do
       $stderr.close unless $stderr.closed?

@@ -68,6 +68,5 @@ describe Pooka::PID do
       expect(File.exist? path).to be_falsey
       expect(File.exist? rename_path).to be_truthy
     end
-
   end
 end

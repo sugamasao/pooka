@@ -50,8 +50,8 @@ Style/Documentation:
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundBlockBody:
-  Enabled: false
+#Style/EmptyLinesAroundBlockBody:
+#  Enabled: false
 
 # Offense count: 3
 # Cop supports --auto-correct.
