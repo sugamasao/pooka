@@ -41,7 +41,7 @@ describe Pooka::Configuration do
     before do
       File.write(yaml_path, 'foo: bar')
     end
-    subject { c = Pooka::Configuration.new; c.load(yaml_path);c }
+    subject { c = Pooka::Configuration.new; c.load(yaml_path); c }
 
     it 'get config value' do
       expect(subject['foo']).to eq 'bar'
@@ -67,7 +67,7 @@ describe Pooka::Configuration do
 
     context '#to_s' do
       it 'data to_string' do
-        expect(subject.to_s).to include({'foo' => 'bar'}.to_s)
+        expect(subject.to_s).to include({ 'foo' => 'bar' }.to_s)
       end
     end
   end
@@ -91,19 +91,18 @@ describe Pooka::Configuration do
     end
   end
 
-
   describe 'reload configuration' do
     let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }
     before do
       File.write(yaml_path, 'foo: bar')
     end
-    subject { c = Pooka::Configuration.new; c.load(yaml_path);c }
+    subject { c = Pooka::Configuration.new; c.load(yaml_path); c }
 
     it '#reload' do
       expect {
         File.write(yaml_path, 'foo: baz')
         subject.reload
-      }.to change{ subject['foo'] }.from('bar').to('baz')
+      }.to change { subject['foo'] }.from('bar').to('baz')
     end
   end
 end

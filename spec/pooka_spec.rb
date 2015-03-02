@@ -9,9 +9,11 @@ describe Pooka do
     let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }
     let(:worker) {
       class Worker
-        def run(_, __);end
-        def run_before(_, __);end
-        def run_after(_, __);end
+        def run(_, __); end
+
+        def run_before(_, __); end
+
+        def run_after(_, __); end
       end
       Worker.new
     }

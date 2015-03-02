@@ -7,7 +7,7 @@ module Pooka
   # Pooka Configuration Class.
   class Configuration
     # @abstract abstract Configuration Error class
-    class ConfigurationError < StandardError;end
+    class ConfigurationError < StandardError; end
 
     # Configuration file not found Error Class
     class ConfigurationFileNotFound < ConfigurationError; end
