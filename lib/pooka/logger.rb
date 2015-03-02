@@ -23,14 +23,12 @@ module Pooka
     # Logger open
     # if Logger open failed. using STDERR device
     def open
-      begin
-        @logger = ::Logger.new(@path)
-      rescue => e
-        @logger = ::Logger.new($stderr)
-        @logger.warn "Logger File Create Failed(using STDERR device). [#{e.message}] path=[#{@path}] [#{@path.class}]"
-      ensure
-        @logger.level = find_logger_level(@level)
-      end
+      @logger = ::Logger.new(@path)
+    rescue => e
+      @logger = ::Logger.new($stderr)
+      @logger.warn "Logger File Create Failed(using STDERR device). [#{e.message}] path=[#{@path}] [#{@path.class}]"
+    ensure
+      @logger.level = find_logger_level(@level)
     end
 
     # Logger close

@@ -36,30 +36,28 @@ module Pooka
     # @param [Boolean] daemonize true is daemonize
     # @return [void]
     def run(daemonize = true)
-      begin
-        Process.daemon if daemonize
+      Process.daemon if daemonize
 
-        @logger = Pooka::Logger.new(@config.logger_path, @config.logger_level)
-        @logger.open
+      @logger = Pooka::Logger.new(@config.logger_path, @config.logger_level)
+      @logger.open
 
-        @pid = PID.new(@config.pid_path, $PROCESS_ID)
-        @pid.create
+      @pid = PID.new(@config.pid_path, $PROCESS_ID)
+      @pid.create
 
-        register_signal
-        signal_handler = signal_handler_thread
-        inspect_daemon_information
+      register_signal
+      signal_handler = signal_handler_thread
+      inspect_daemon_information
 
-        @worker.run_before(@config, @logger) if @worker.respond_to?(:run_before)
+      @worker.run_before(@config, @logger) if @worker.respond_to?(:run_before)
 
-        @worker.run(@config, @logger)
-      rescue => e
-        @logger.fatal "#{ e.message }/#{ e.class } -> #{ e.backtrace }"
-      ensure
-        signal_handler.exit if signal_handler.alive?
-        @worker.run_after(@config, @logger) if @worker.respond_to?(:run_after)
-        @pid.delete
-        @logger.close
-      end
+      @worker.run(@config, @logger)
+    rescue => e
+      @logger.fatal "#{ e.message }/#{ e.class } -> #{ e.backtrace }"
+    ensure
+      signal_handler.exit if signal_handler.alive?
+      @worker.run_after(@config, @logger) if @worker.respond_to?(:run_after)
+      @pid.delete
+      @logger.close
     end
 
     private
@@ -110,15 +108,13 @@ module Pooka
 
     # configuration reload
     def configuration_reload
-      begin
-        @logger.debug 'execute configuration reload.'
-        @config.reload
-      rescue Configuration::ConfigurationError => e
-        @logger.warn "Configuration ReLoad Fail. #{ e.message }"
-      else
-        @logger.reopen(@config.logger_path, @config.logger_level)
-        @pid.rename(@config.pid_path)
-      end
+      @logger.debug 'execute configuration reload.'
+      @config.reload
+    rescue Configuration::ConfigurationError => e
+      @logger.warn "Configuration ReLoad Fail. #{ e.message }"
+    else
+      @logger.reopen(@config.logger_path, @config.logger_level)
+      @pid.rename(@config.pid_path)
     end
 
     # logging daemon information
