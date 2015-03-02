@@ -102,7 +102,7 @@ describe Pooka::Configuration do
       expect {
         File.write(yaml_path, 'foo: baz')
         subject.reload
-      }.to change{ subject['foo'] }.from('bar').to('baz')
+      }.to change { subject['foo'] }.from('bar').to('baz')
     end
   end
 end
