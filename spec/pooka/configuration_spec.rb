@@ -91,7 +91,6 @@ describe Pooka::Configuration do
     end
   end
 
-
   describe 'reload configuration' do
     let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }
     before do
