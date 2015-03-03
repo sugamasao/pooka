@@ -99,8 +99,8 @@ Style/SymbolProc:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/TrailingWhitespace:
-  Enabled: false
+#Style/TrailingWhitespace:
+#  Enabled: false
 
 # Offense count: 2
 # Cop supports --auto-correct.

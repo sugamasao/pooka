@@ -14,7 +14,7 @@ module Pooka
 
     # Configuration Parse Error Class
     class ConfigurationFileParseError < ConfigurationError; end
-    
+
     extend Forwardable
 
     # default value
