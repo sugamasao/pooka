@@ -21,7 +21,7 @@ class Worker
   end
 
   def run(configure, logger)
-    until @stop do
+    until @stop
       logger.info 'run worker'
       sleeping configure.sleep_time
     end
