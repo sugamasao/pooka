@@ -86,7 +86,7 @@ module Pooka
 
     def signal_handler_thread
       Thread.new do
-        until @stop do
+        until @stop
           begin
             if @configuration_reload
               configuration_reload

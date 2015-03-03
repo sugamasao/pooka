@@ -104,5 +104,5 @@ Style/TrailingWhitespace:
 
 # Offense count: 2
 # Cop supports --auto-correct.
-Style/WhileUntilDo:
-  Enabled: false
+#Style/WhileUntilDo:
+#  Enabled: false
