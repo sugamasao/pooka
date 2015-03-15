@@ -5,22 +5,9 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
 # Offense count: 1
 Metrics/AbcSize:
   Max: 27
-
-# Offense count: 4
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 19
-
-# Offense count: 1
-Style/AsciiComments:
-  Enabled: false
 
 # Offense count: 11
 # Cop supports --auto-correct.
@@ -44,17 +31,6 @@ Style/RegexpLiteral:
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAsExpressionSeparator.
 Style/Semicolon:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/SignalException:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/WhileUntilDo:
   Enabled: false
 
 # Offense count: 1

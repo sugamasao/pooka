@@ -37,8 +37,8 @@ describe Pooka::Logger do
       logger_manager = Pooka::Logger.new(create_log_path, 'INFO')
       logger_manager.open
       logger_manager.info 'hi'
-      expect(File.readlines(create_log_path).last).to match /hi/
-      expect(File.readlines(create_log_path).last).to match /INFO/
+      expect(File.readlines(create_log_path).last).to match(/hi/)
+      expect(File.readlines(create_log_path).last).to match(/INFO/)
       expect { logger_manager.close }.to_not raise_error
     end
   end

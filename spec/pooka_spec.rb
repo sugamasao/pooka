@@ -48,7 +48,7 @@ describe Pooka do
 
           # Ensure process is running.
           sleep 1.0
-          Process.kill('INT', $PROCESS_ID)
+          Process.kill('INT', Process.pid)
           sleep 0.2
           thread.kill
         }.to output(/process shutdown/).to_stderr
@@ -63,9 +63,9 @@ describe Pooka do
 
           # Ensure process is running.
           sleep 0.1
-          Process.kill('HUP', $PROCESS_ID)
+          Process.kill('HUP', Process.pid)
           sleep 1.0
-          Process.kill('TERM', $PROCESS_ID)
+          Process.kill('TERM', Process.pid)
           sleep 0.3
           thread.kill
         }.to output(/execute configuration reload/).to_stderr
@@ -79,9 +79,9 @@ describe Pooka do
 
           # Ensure process is running.
           sleep 0.1
-          Process.kill('HUP', $PROCESS_ID)
+          Process.kill('HUP', Process.pid)
           sleep 1.0
-          Process.kill('TERM', $PROCESS_ID)
+          Process.kill('TERM', Process.pid)
           sleep 0.3
           thread.kill
         }.to output(/Configuration ReLoad Fail/).to_stderr
@@ -97,9 +97,9 @@ describe Pooka do
 
           # Ensure process is running.
           sleep 0.1
-          Process.kill('USR1', $PROCESS_ID)
+          Process.kill('USR1', Process.pid)
           sleep 1.0
-          Process.kill('TERM', $PROCESS_ID)
+          Process.kill('TERM', Process.pid)
           sleep 0.3
           thread.kill
         }.to output(/process start/).to_stderr
@@ -114,9 +114,9 @@ describe Pooka do
 
           # Ensure process is running.
           sleep 0.1
-          Process.kill('USR1', $PROCESS_ID)
+          Process.kill('USR1', Process.pid)
           sleep 1.0
-          Process.kill('TERM', $PROCESS_ID)
+          Process.kill('TERM', Process.pid)
           sleep 0.3
           thread.kill
         }.to output(/Master Process Signal Handler Error.*ArgumentError/).to_stderr
