@@ -46,6 +46,8 @@ module Pooka
 
       register_signal
       signal_handler = signal_handler_thread
+      @logger.debug 'process start'
+
       inspect_daemon_information
 
       @worker.run_before(@config, @logger) if @worker.respond_to?(:run_before)
@@ -56,6 +58,7 @@ module Pooka
     ensure
       signal_handler.exit if signal_handler.alive?
       @worker.run_after(@config, @logger) if @worker.respond_to?(:run_after)
+      @logger.debug 'process shutdown'
       @pid.delete
       @logger.close
     end
