@@ -2,6 +2,9 @@
 
 TODO: Write a gem description
 
+[![Code Climate](https://codeclimate.com/github/sugamasao/pooka/badges/gpa.svg)](https://codeclimate.com/github/sugamasao/pooka)
+[![Test Coverage](https://codeclimate.com/github/sugamasao/pooka/badges/coverage.svg)](https://codeclimate.com/github/sugamasao/pooka)
+
 ## Installation
 
 Add this line to your application's Gemfile:
