@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/sugamasao/pooka.svg?branch=master)](https://travis-ci.org/sugamasao/pooka)
 [![Code Climate](https://codeclimate.com/github/sugamasao/pooka/badges/gpa.svg)](https://codeclimate.com/github/sugamasao/pooka)
 [![Test Coverage](https://codeclimate.com/github/sugamasao/pooka/badges/coverage.svg)](https://codeclimate.com/github/sugamasao/pooka)
+[![Inline docs](http://inch-ci.org/github/sugamasao/pooka.svg?branch=master)](http://inch-ci.org/github/sugamasao/pooka)
 
 Pooka is Simple Daemon framework.
 
