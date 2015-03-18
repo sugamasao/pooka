@@ -8,7 +8,7 @@ require 'pry'
 
 class MyWorker
   def run(_, __)
-    until @stop do
+    until @stop
       sleep 0.1
     end
   end

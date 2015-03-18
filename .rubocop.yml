@@ -2,3 +2,18 @@ inherit_from: .rubocop_todo.yml
 
 Style/LineLength:
   Max: 120
+
+# Configuration parameters: IgnoredMethods.
+Style/SymbolProc:
+  Enabled: false
+
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/SignalException:
+  Enabled: false
+
+# Configuration parameters: CountComments.
+Metrics/MethodLength:
+  Max: 50
+
+Style/AsciiComments:
+  Enabled: false

@@ -1,6 +1,8 @@
 # Pooka
 
-TODO: Write a gem description
+[![Build Status](https://travis-ci.org/sugamasao/pooka.svg?branch=master)](https://travis-ci.org/sugamasao/pooka)
+
+Pooka is Simple Daemon framework.
 
 [![Code Climate](https://codeclimate.com/github/sugamasao/pooka/badges/gpa.svg)](https://codeclimate.com/github/sugamasao/pooka)
 [![Test Coverage](https://codeclimate.com/github/sugamasao/pooka/badges/coverage.svg)](https://codeclimate.com/github/sugamasao/pooka)
@@ -24,7 +26,7 @@ Or install it yourself as:
 ### Simple Use
 
 ```ruby
-require 'pooka`
+require 'pooka'
 
 class Worker
   def run_before(configure, logger)
