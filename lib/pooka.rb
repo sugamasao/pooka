@@ -15,10 +15,8 @@ module Pooka
     # daemon.configure_load '/path/to/configure.yml'
     # @param [Class] worker require `run` method
     # @param [String/Pathname] filename
-    # @param [Boolean] verbose true is master process verbose mode.
-    def initialize(worker, config_file: nil, verbose: false)
+    def initialize(worker, config_file: nil)
       @worker  = worker
-      @verbose = verbose
       @config  = Configuration.new
       @config.load(config_file) if config_file
     end
