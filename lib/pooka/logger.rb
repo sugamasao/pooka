@@ -17,6 +17,7 @@ module Pooka
     def initialize(path, level)
       @path  = path || $stderr
       @level = level
+      @use_stderr = @path == $stderr
     end
 
     # Logger open
@@ -39,11 +40,15 @@ module Pooka
     # @param [String] new_logfile_path nil is using now used file path
     # @param [String] new_level nil is using now used log level
     def reopen(new_logfile_path = nil, new_level = nil)
+      new_logfile_path ||= @path
       old_logger = @logger
+      old_use_stderr = @use_stderr
       begin
-        @logger = ::Logger.new(new_logfile_path || @path)
+        @logger = ::Logger.new(new_logfile_path)
         @logger.level = find_logger_level(new_level || @level)
-        old_logger.close
+
+        @use_stderr = new_logfile_path == $stderr
+        old_logger.close unless old_use_stderr
       rescue
         @logger = old_logger
         @logger.warn "Logger Reopen Failed. Use Old Logger. (New Logger File Path = #{ new_logfile_path || @path })"
