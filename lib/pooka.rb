@@ -35,7 +35,7 @@ module Pooka
       @logger = Pooka::Logger.new(@config.logger_path, @config.logger_level)
       @logger.open
 
-      @pid = PID.new(@config.pid_path, $PROCESS_ID)
+      @pid = PID.new(@config.pid_path, Process.pid)
       @pid.create
 
       register_signal
