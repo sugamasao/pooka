@@ -64,15 +64,14 @@ class Worker
   end
 end
 
-pooka = Pooka::Master.new(Worker.new, false)
+pooka = Pooka::Master.new(Worker.new)
 pooka.run(false)
 ```
 
 ### using config file.
 
 ```ruby
-pooka = Pooka::Master.new(Worker.new, false)
-pooka.configure_load yaml_path
+pooka = Pooka::Master.new(Worker.new, config_file: yaml_path)
 pooka.run(false)
 ```
 
