@@ -18,3 +18,5 @@ test/tmp
 test/version_tmp
 tmp
 vendor
+example/*pid
+example/*yml

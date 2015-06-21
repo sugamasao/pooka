@@ -1,8 +1,8 @@
 require 'pooka'
 require 'pry'
 
-yaml_path = File.join(Dir.mktmpdir('example'), 'config.yml')
-pid_path  = File.join(Dir.mktmpdir('example'), 'example.pid')
+yaml_path = File.join(__dir__, 'config.yml')
+pid_path  = File.join(__dir__, 'example.pid')
 File.write(yaml_path, <<YAML)
 pid_path: #{ pid_path }
 sleep_time: 5
