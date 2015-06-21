@@ -8,7 +8,7 @@ describe Pooka do
   describe Pooka::Master do
     let(:yaml_path) { File.join(Dir.mktmpdir('rspec'), 'config.yml') }
     let(:worker) { MyWorker.new }
-    subject(:master) { Pooka::Master.new(worker, config_file: yaml_path, verbose: true) }
+    subject(:master) { Pooka::Master.new(worker, config_file: yaml_path) }
     before do
       File.write(yaml_path, 'foo: bar')
     end
@@ -104,7 +104,7 @@ describe Pooka do
 
   describe Pooka::Master do
     let(:worker) { MyWorker.new }
-    subject(:master) { Pooka::Master.new(worker, verbose: true) }
+    subject(:master) { Pooka::Master.new(worker) }
 
     it 'worker received hup signal(fail config reload)' do
       expect {

@@ -51,5 +51,5 @@ class Worker
   end
 end
 
-pooka = Pooka::Master.new(Worker.new, config_file: yaml_path, verbose: false)
+pooka = Pooka::Master.new(Worker.new, config_file: yaml_path)
 pooka.run(false)
