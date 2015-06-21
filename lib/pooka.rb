@@ -14,19 +14,13 @@ module Pooka
     # daemon = Pooka.new(Worker)
     # daemon.configure_load '/path/to/configure.yml'
     # @param [Class] worker require `run` method
+    # @param [String/Pathname] filename
     # @param [Boolean] verbose true is master process verbose mode.
-    def initialize(worker, verbose = false)
+    def initialize(worker, config_file: nil, verbose: false)
       @worker  = worker
       @verbose = verbose
       @config  = Configuration.new
-    end
-
-    # configuration file load.
-    # file type in YAML or JSON(inference by extname)
-    # @param [String/Pathname] filename
-    # @return [void]
-    def configure_load(filename)
-      @config.load(filename)
+      @config.load(config_file) if config_file
     end
 
     # usage

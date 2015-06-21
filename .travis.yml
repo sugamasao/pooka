@@ -1,7 +1,6 @@
 language: ruby
 install: gem install bundler && bundle
 rvm:
-  - 1.9.3
   - 2.1
   - 2.2
 script: CODECLIMATE_REPO_TOKEN=ecbdea6ae96aef9cc65afd4e99b62b6bf1d968557e995aa9f1ce296421f4bd72 bundle exec rake
